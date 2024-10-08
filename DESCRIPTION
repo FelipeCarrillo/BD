@@ -1,0 +1,15 @@
+Package: BD
+Type: Package
+Title: This package is intended to be useful for the user to implement practical functions
+Version: 0.1.0
+Author: Felipe Carrillo
+Maintainer: The package maintainer <felipe_carrillo@fws.gov>
+Description: This is my first package. It contains useful functions but the idea is to make more sophisticated high level functions.
+Encoding: UTF-8
+License: MIT + file LICENSE
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: tidyverse, tidyr, magrittr, ggplot2, dplyr, sf
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
