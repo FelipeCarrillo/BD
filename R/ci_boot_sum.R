@@ -28,8 +28,9 @@
 #' ci_boot_sum(salmon, month, pd)
 #'
 #' @export
+
 library(tidyverse)
-my_boot = function(x, times = 5000, conf.int = 0.95) {
+my_boot = function(x, times = 1000, conf.int = 0.95) {
   cis = quantile(replicate(times, sum(sample(x, replace = TRUE))), probs = c((1 - conf.int)/2, (1 + conf.int)/2))
   data.frame(sum = sum(x), lower.ci = cis[1], upper.ci = cis[2])
 }

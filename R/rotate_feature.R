@@ -22,7 +22,7 @@
 #' a <- salinity[,2] ;a
 #'  b <- as.numeric(a$freq);b    #convert to numeric to avoid errors
 #' length(b)
-#' the_strips <- get_strips(n = length(b), crs = st_crs(sf_bay)) |> rotate_feature(angle = 105, start_point = start_UTM)
+#' the_strips <- BD:::get_strips(n = length(b), crs = st_crs(sf_bay)) |> rotate_feature(angle = 105, start_point = start_UTM)
 #' the_strips2 <- cbind(the_strips,salinity)
 #' the_strips2$freq <- as.factor(the_strips2$freq)
 #' the_strips2 <- the_strips2 |> st_intersection(sf_bay)
