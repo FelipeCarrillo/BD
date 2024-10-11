@@ -1,12 +1,19 @@
 
-#' @title Rotating features or strips in San Francisco Bay
+#' @title Color Coding Salinity in San Francisco Bay
 #'
-#' @param data A dataset with 2 rows
+#' @param Shapefile A shapefile of the desired area. This can be of type .shp or .RDS. Default projection is google mercator (3587).
+#' @param StartPoint Start point where color coding will start. Make sure to convert coordinates to UTM from lat lon.
+#' @param n get_strips(n) is the number of strips desired (defaults to 10). Usually the number of desired strips are the number of rows in 'data'
+#' @param strip_width Width of strips defaults to 1000 meters (1 km). This can be changed in get_strips(strip_width = xxxx)
+#' @param strip_length Length of strips defaults to 22000 meters (22 km). This can be changed in get_strips(strip_length = xxxx)
+#' @param rotate_feature Rotate the strips to the desired angle (defaults to 0).
+#' @param Mapview/Leaflet Use any interactive mapping software or ggplot2 to vizualise shapefile and associated dataset.
+#' @param data A dataset with 2 rows to overlay on shapefile
 #' @param var The salinity value per kilometer
-#' @return A rotated set of strips on any direction
+#' @return A shapefile associated with a dataframe
 #' @import tidyverse tidyr magrittr ggplot2 dplyr sf
 #'
-#' @name rotate_feature
+#' @name get_strips
 #' @examples
 #' library(BD)
 #' library(tidyverse)
@@ -15,9 +22,10 @@
 #' library(leafem)
 #' library(sf)
 #'
-#'head(salinity);head(sf_bay)
+#' head(salinity)
+#' head(sf_bay)
 #' start_UTM <- c(565727.42, 4213365.17)
-
+#'
 #' sf_bay <- sf_bay |> st_transform(26910)
 #' a <- salinity[,2] ;a
 #'  b <- as.numeric(a$freq);b    #convert to numeric to avoid errors
