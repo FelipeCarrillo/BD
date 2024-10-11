@@ -11,16 +11,18 @@
 #' library(BD)
 #' library(tidyverse)
 #' data(fish)
-#' salmon <- dplyr::filter(fish, wk < 6)
-#' salmon
+#' juv <- dplyr::filter(fish, wk < 6)
+#' juv
 #'
 #' data(model)
-#' intervals(salmon,'wk',model)
+#' intervals(juv,'wk',model)
 #'
 #library(plyr)
 
 #' @export
-
+#IMPORTANT TO REMEMBER: The intervals function calculates the mean for weeks
+#with NA's within the function so there is no need to re-calculate it in the
+#example like I did in ci_boot_sum, ci_boot and ci_sum
 library(stats)
 intervals <- function(dataset, by, model){
   SEValues <- lm(Efficiency ~ PercQ, data = model) # Regression equation values and std Error

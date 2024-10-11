@@ -11,7 +11,7 @@
 #' @param data A dataset with 2 rows to overlay on shapefile
 #' @param var The salinity value per kilometer
 #' @return A shapefile associated with a dataframe
-#' @import tidyverse tidyr magrittr ggplot2 dplyr
+#' @import tidyverse tidyr magrittr ggplot2 dplyr sf
 #'
 #' @name get_strips
 #' @examples
@@ -20,6 +20,7 @@
 #' library(mapview)
 #' library(leaflet)
 #' library(leafem)
+#' library(sf)
 #'
 #' head(salinity)
 #' head(sf_bay)

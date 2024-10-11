@@ -34,6 +34,7 @@ library(tidyverse)
 library(mapview)
 library(leaflet)
 library(leafem)
+library(sf)
 
 head(salinity)
 head(sf_bay)

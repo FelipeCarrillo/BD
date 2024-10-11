@@ -20,10 +20,10 @@ Compute intervals by week
 library(BD)
 library(tidyverse)
 data(fish)
-salmon <- dplyr::filter(fish, wk < 6)
-salmon
+juv <- dplyr::filter(fish, wk < 6)
+juv
 
 data(model)
-intervals(salmon,'wk',model)
+intervals(juv,'wk',model)
 
 }

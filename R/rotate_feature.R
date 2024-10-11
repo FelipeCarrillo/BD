@@ -4,7 +4,7 @@
 #' @param data A dataset with 2 rows
 #' @param var The salinity value per kilometer
 #' @return A rotated set of strips on any direction
-#' @import tidyverse tidyr magrittr ggplot2 dplyr
+#' @import tidyverse tidyr magrittr ggplot2 dplyr sf
 #'
 #' @name rotate_feature
 #' @examples
@@ -13,6 +13,7 @@
 #' library(mapview)
 #' library(leaflet)
 #' library(leafem)
+#' library(sf)
 #'
 #'head(salinity);head(sf_bay)
 #' start_UTM <- c(565727.42, 4213365.17)

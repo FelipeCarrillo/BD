@@ -20,6 +20,7 @@ library(tidyverse)
 library(mapview)
 library(leaflet)
 library(leafem)
+library(sf)
 
 head(salinity);head(sf_bay)
 start_UTM <- c(565727.42, 4213365.17)
