@@ -1,5 +1,5 @@
 
-#' @title Deaggregate rows with rownames as integers instead of decimals
+#' @title Deaggregate rows with rownames as integers
 #'
 #' @param data A dataset with multiple rows
 #' @param var The variable that the user want to split in multiple rows

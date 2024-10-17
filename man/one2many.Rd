@@ -2,7 +2,7 @@
 % Please edit documentation in R/one2many.R
 \name{one2many}
 \alias{one2many}
-\title{Deaggregate rows with rownames as integers instead of decimals}
+\title{Deaggregate rows with rownames as integers}
 \arguments{
 \item{data}{A dataset with multiple rows}
 
@@ -12,7 +12,7 @@
 An aggregated dataset larger than the original
 }
 \description{
-Deaggregate rows with rownames as integers instead of decimals
+Deaggregate rows with rownames as integers
 }
 \examples{
 library(tidyverse)

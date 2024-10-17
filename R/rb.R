@@ -92,11 +92,11 @@
 #' dim(salinity);head(salinity)
 "salinity"
 
-#' Shape file of the San Francisco Bay
+#' Shapefile of the San Francisco Bay
+#'
 #' NOTE TO REMEMBER: This file was created from suisun_rio_vista.RDS and saved as
 #' sf_bay.rda...example: sf_bay <- readRDS('suisun_rio_vista.RDS'); save(sf_bay, file = 'sf_bay.rda')
 #' That's the reason the example for get_strips() starts with sf_bay() without loading it.
-#' A shapefile
 #'
 #' @format Color code based on salinities:
 #' \describe{
