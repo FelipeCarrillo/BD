@@ -11,7 +11,7 @@
 #' library(BD)
 #' library(tidyverse)
 #' data(fish)
-#' juv <- dplyr::filter(fish, wk < 6)
+#' juv <- filter(fish, wk < 6)
 #' juv
 #'
 #' data(model)
@@ -24,6 +24,7 @@
 #with NA's within the function so there is no need to re-calculate it in the
 #example like I did in ci_boot_sum, ci_boot and ci_sum
 library(stats)
+library(tidyverse)
 intervals <- function(dataset, by, model){
   SEValues <- lm(Efficiency ~ PercQ, data = model) # Regression equation values and std Error
   MSValue <- anova(lm(Efficiency ~ PercQ, data = model))    # Mean-Square value

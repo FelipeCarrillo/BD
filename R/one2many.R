@@ -1,19 +1,27 @@
 
-#' @title Deaggregate rows
+#' @title Deaggregate rows with rownames as integers instead of decimals
 #'
 #' @param data A dataset with multiple rows
 #' @param var The variable that the user want to split in multiple rows
-
 #' @return An aggregated dataset larger than the original
-#'
+#' @import tidyverse tidyr magrittr ggplot2 dplyr
+
+#' @name one2many
 #' @examples
-#' a <- data.frame(name= c("Maria", "Tina"), age= c(5,3))
-#' a
-#' one2many(a,'age')
-#'
+#' library(tidyverse)
+#' library(BD)
+#' data(RBsalmon)
+#' RBsalmon <- arrange(RBsalmon, SampleDate)
+#' RBsalmon <- RBsalmon[1:20,]
+#' RBsalmon <- data.frame(RBsalmon)
+#' RBsalmon
+
+#' one2many(RBsalmon, RBsalmon$Count)
+
 #' @export
-one2many <- function(data, var){
-data$rows <- seq(nrow(data))
-data <- data[rep(1:nrow(data),data[,var]),]
-return(data)
+library(tidyr)
+library(tidyverse)
+one2many <- function(data, var,...){
+data %>% mutate(rows = row_number()) |>
+uncount({{var}},...)
 }

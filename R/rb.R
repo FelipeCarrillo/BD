@@ -18,6 +18,26 @@
 #' dim(fish);head(fish)
 "fish"
 
+#' Salmon catch using screw-traps in Red Bluff, CA
+#'
+#' A dataset containing raw un-expanded data
+#'
+#' @format A data frame with 57,698 rows and 14 columns:
+#' \describe{
+#'   \item{StationCode}{Screwtrap name}
+#'   \item{SampleDate}{Date sample was collected}
+#'   \item{OrganismCode}{Salmon Run code}
+#'   \item{ForkLength}{Fish measurement from snout to tail fork}
+#'   \item{Count}{Number of fish caught}
+#'   \item{race2}{Salmon run, either Spring, Fall, Late-Fall or Winter}
+#'
+#'   ...
+#' }
+#' @examples
+#' library(BD)
+#' dim(RBsalmon);head(RBsalmon)
+"RBsalmon"
+
 #' Trap efficiencies
 #'
 #' A dataset containing trap efficiency trials
@@ -73,7 +93,9 @@
 "salinity"
 
 #' Shape file of the San Francisco Bay
-#'
+#' NOTE TO REMEMBER: This file was created from suisun_rio_vista.RDS and saved as
+#' sf_bay.rda...example: sf_bay <- readRDS('suisun_rio_vista.RDS'); save(sf_bay, file = 'sf_bay.rda')
+#' That's the reason the example for get_strips() starts with sf_bay() without loading it.
 #' A shapefile
 #'
 #' @format Color code based on salinities:

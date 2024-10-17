@@ -7,7 +7,7 @@
 #' @param strip_width Width of strips defaults to 1000 meters (1 km). This can be changed in get_strips(strip_width = xxxx)
 #' @param strip_length Length of strips defaults to 22000 meters (22 km). This can be changed in get_strips(strip_length = xxxx)
 #' @param rotate_feature Rotate the strips to the desired angle (defaults to 0).
-#' @param Mapview/Leaflet Use any interactive mapping software or ggplot2 to vizualise shapefile and associated dataset.
+#' @param Mapview/Leaflet Use any interactive mapping software or ggplot2 to visualize shapefile and associated dataset.
 #' @param data A dataset with 2 rows to overlay on shapefile
 #' @param var The salinity value per kilometer
 #' @return A shapefile associated with a dataframe
@@ -23,17 +23,23 @@
 #' library(sf)
 #'
 #' head(salinity)
-#' head(sf_bay)
-#' start_UTM <- c(565727.42, 4213365.17)
+#' start_UTM <- c(565727.42, 4213365.17) #UTM coordinates for color coding starting point.
 #'
+#' ##Can also use readRDS('myshape.RDS') or read_sf('myshape.shp'), or st_read('myshape.shp')
+#'
+#' #Some data manipulation first....
 #' sf_bay <- sf_bay |> st_transform(26910)
 #' a <- salinity[,2] ;a
-#'  b <- as.numeric(a$freq);b    #convert to numeric to avoid errors
+#' b <- as.numeric(a$freq);b
 #' length(b)
+#'
+#' #Apply the function to shapefile and dataset
 #' the_strips <- get_strips(n = length(b), crs = st_crs(sf_bay)) |> rotate_feature(angle = 105, start_point = start_UTM)
 #' the_strips2 <- cbind(the_strips,salinity)
 #' the_strips2$freq <- as.factor(the_strips2$freq)
 #' the_strips2 <- the_strips2 |> st_intersection(sf_bay)
+#'
+#' #Visualize the results
 #' mapview(the_strips2, zcol = 'freq', layer.name = 'X2 frequency', col.regions= pals::brewer.blues(7))
 
 #' @export

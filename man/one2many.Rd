@@ -2,10 +2,7 @@
 % Please edit documentation in R/one2many.R
 \name{one2many}
 \alias{one2many}
-\title{Deaggregate rows}
-\usage{
-one2many(data, var)
-}
+\title{Deaggregate rows with rownames as integers instead of decimals}
 \arguments{
 \item{data}{A dataset with multiple rows}
 
@@ -15,11 +12,15 @@ one2many(data, var)
 An aggregated dataset larger than the original
 }
 \description{
-Deaggregate rows
+Deaggregate rows with rownames as integers instead of decimals
 }
 \examples{
-a <- data.frame(name= c("Maria", "Tina"), age= c(5,3))
-a
-one2many(a,'age')
-
+library(tidyverse)
+library(BD)
+data(RBsalmon)
+RBsalmon <- arrange(RBsalmon, SampleDate)
+RBsalmon <- RBsalmon[1:20,]
+RBsalmon <- data.frame(RBsalmon)
+RBsalmon
+one2many(RBsalmon, RBsalmon$Count)
 }
