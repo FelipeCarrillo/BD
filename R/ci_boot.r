@@ -1,4 +1,4 @@
-#' @title Compute bootstrapped confidence intervals
+#' @title Compute mean bootstrapped confidence intervals
 #'
 #' @param dat Dataset of juvenile or adult salmon
 #' @param by Break dat by week, month or year
@@ -23,9 +23,9 @@
 #' salmon <- salmon %>% group_by(wk_days, year, month, wk) %>%
 #' reframe(pd = round(if_else(is.na(pd),mean(pd, na.rm=TRUE),pd))) %>%
 #' arrange(wk) %>% data.frame()
+#'salmon
 #'
-#' salmon
-#' ci_boot(dat = salmon, by = wk, var = pd)
+#' ci_boot(dat = salmon, by = wk, var = pd, conf.int = 0.90)
 #' ci_boot(salmon, month, pd)
 #'
 #' @export

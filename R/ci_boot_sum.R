@@ -24,7 +24,7 @@
 #' arrange(wk) %>% data.frame()
 #'  salmon
 #'
-#' ci_boot_sum(dat = salmon, by = wk, var = pd)
+#' ci_boot_sum(dat = salmon, by = wk, var = pd, conf.int = 0.99)
 #' ci_boot_sum(salmon, month, pd)
 #'
 #' @export

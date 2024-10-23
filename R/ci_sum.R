@@ -26,8 +26,9 @@
 #' salmon <- salmon %>% group_by(wk_days, year, month, wk) %>%
 #' reframe(pd = round(if_else(is.na(pd),mean(pd, na.rm=TRUE),pd))) %>%
 #' arrange(wk) %>% data.frame()
+#' salmon
 #'
-#' #' ci_sum(salmon, month, pd, conf.int = 0.90)
+#' ci_sum(salmon, month, pd, conf.int = 0.90)
 #' ci_sum(salmon, wk, pd, conf.int = 0.99)
 #'
 #' @export

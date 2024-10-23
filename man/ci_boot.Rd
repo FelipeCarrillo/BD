@@ -2,7 +2,7 @@
 % Please edit documentation in R/ci_boot.R
 \name{ci_boot}
 \alias{ci_boot}
-\title{Compute bootstrapped confidence intervals}
+\title{Compute mean bootstrapped confidence intervals}
 \arguments{
 \item{dat}{Dataset of juvenile or adult salmon}
 
@@ -16,7 +16,7 @@
 Mean fish passage and confidence intervals on the mean
 }
 \description{
-Compute bootstrapped confidence intervals
+Compute mean bootstrapped confidence intervals
 }
 \examples{
 library(BD)
@@ -33,9 +33,9 @@ salmon <- salmon \%>\% group_by(wk) \%>\% mutate(wk_days = length(wk))
 salmon <- salmon \%>\% group_by(wk_days, year, month, wk) \%>\%
 reframe(pd = round(if_else(is.na(pd),mean(pd, na.rm=TRUE),pd))) \%>\%
 arrange(wk) \%>\% data.frame()
-
 salmon
-ci_boot(dat = salmon, by = wk, var = pd)
+
+ci_boot(dat = salmon, by = wk, var = pd, conf.int = 0.90)
 ci_boot(salmon, month, pd)
 
 }
