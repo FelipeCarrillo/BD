@@ -20,7 +20,7 @@ report(dat)
 \item{dat}{Data with 6 columns}
 }
 \value{
-shiny app of salmon runs. Type 'report(Rbsalmon)' to launch shiny app
+shiny app of salmon runs. Type 'report(RBsalmon)' to launch shiny app
 }
 \description{
 Shiny application

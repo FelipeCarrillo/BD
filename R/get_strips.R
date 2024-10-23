@@ -7,7 +7,7 @@
 #' @param strip_width Width of strips defaults to 1000 meters (1 km). This can be changed in get_strips(strip_width = xxxx)
 #' @param strip_length Length of strips defaults to 22000 meters (22 km). This can be changed in get_strips(strip_length = xxxx)
 #' @param rotate_feature Rotate the strips to the desired angle (defaults to 0).
-#' @param Mapview/Leaflet Use any interactive mapping software or ggplot2 to visualize shapefile and associated dataset.
+#' @param mapview/leaflet Use any interactive mapping software or ggplot2 to visualize shapefile and associated dataset.
 #' @param data A dataset with 2 rows to overlay on shapefile
 #' @param var The salinity value per kilometer
 #' @return A shapefile associated with a dataframe

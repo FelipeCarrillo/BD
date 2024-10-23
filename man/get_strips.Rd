@@ -16,7 +16,7 @@
 
 \item{rotate_feature}{Rotate the strips to the desired angle (defaults to 0).}
 
-\item{Mapview/Leaflet}{Use any interactive mapping software or ggplot2 to visualize shapefile and associated dataset.}
+\item{mapview/leaflet}{Use any interactive mapping software or ggplot2 to visualize shapefile and associated dataset.}
 
 \item{data}{A dataset with 2 rows to overlay on shapefile}
 
