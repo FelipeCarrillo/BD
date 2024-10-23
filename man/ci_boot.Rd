@@ -24,7 +24,7 @@ library(tidyverse)
 library(Hmisc)
 
 data(fish)
-salmon <- filter(fish, wk < 6)
+salmon <- dplyr::filter(fish, wk < 6)
 salmon
 
 #Estimate daily mean passage for weeks that contain NA

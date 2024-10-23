@@ -6,14 +6,14 @@
 #' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99
 #' @return Summed fish passage and confidence intervals on the sum
 #' @name ci_boot_sum
-#' @import tidyverse
+#' @import tidyverse dplyr
 #'
 #' @examples
 #' library(BD)
 #' library(tidyverse)
 #'
 #' data(fish)
-#' salmon <- filter(fish, wk < 6)
+#' salmon <- dplyr::filter(fish, wk < 6)
 #' salmon
 #'
 #' #Estimate daily mean passage for weeks that contain NA

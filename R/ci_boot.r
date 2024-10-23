@@ -5,7 +5,7 @@
 #' @param var Numeric variable to compute to estimate mean and confidence intervals
 #' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99
 #' @return Mean fish passage and confidence intervals on the mean
-#' @import Hmisc
+#' @import Hmisc dplyr
 #' @name ci_boot
 #'
 #' @examples
@@ -14,7 +14,7 @@
 #' library(Hmisc)
 #'
 #' data(fish)
-#' salmon <- filter(fish, wk < 6)
+#' salmon <- dplyr::filter(fish, wk < 6)
 #' salmon
 #'
 #' #Estimate daily mean passage for weeks that contain NA
