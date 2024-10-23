@@ -105,3 +105,11 @@
 #'   ...
 #' }
 "sf_bay"
+
+#' Shiny application
+#' @format shiny app to display juvenile salmon outmigration:
+#' \describe{
+#'   \item{dat}{Dataset with juvenile salmon catch}
+#'   ...
+#' }
+"report"

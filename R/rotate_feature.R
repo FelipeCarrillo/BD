@@ -4,7 +4,7 @@
 #' @param data A dataset with 2 rows
 #' @param var The salinity value per kilometer
 #' @return A rotated set of strips on any direction
-#' @import tidyverse tidyr magrittr ggplot2 dplyr sf
+#' @import tidyverse tidyr magrittr ggplot2 dplyr sf mapview leaflet leafem
 #'
 #' @name rotate_feature
 #' @examples

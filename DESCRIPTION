@@ -9,7 +9,7 @@ Encoding: UTF-8
 License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 7.2.3
-Imports: tidyverse, tidyr, magrittr, ggplot2, dplyr, sf, Hmisc, DBI, DT, dbplyr, readxl, shiny, shinycssloaders, shinythemes, Hmisc
+Imports: tidyverse, tidyr, magrittr, ggplot2, dplyr, sf, DBI, DT, dbplyr, readxl, shiny, shinycssloaders, shinythemes, Hmisc, leaflet, mapview, leafem
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

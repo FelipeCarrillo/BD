@@ -1,12 +1,6 @@
 #' @title shiny app to visualize juvenile salmon runs
 #'
 #' @param dat Data with 6 columns
-#' @param SampleDate plot daily values
-#' @param OrganismCode only 'chn' is being analized.
-#' @param Forklength length of fish from snout to fork
-#' @param Count daily counts of actual juvenile salmon captured by screw-traps
-#' @param race2 salmon runs of winter, spring, fall, and late-fall
-#' @aliases alias
 #' @import tidyverse DBI shiny dbplyr shinythemes DT shinycssloaders readxl
 #' @return shiny app of salmon runs. Type 'report(Rbsalmon)' to launch shiny app
 #'
