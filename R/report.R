@@ -22,20 +22,11 @@ library(dbplyr)
 library(shinythemes)
 library(DT)
 library(shinycssloaders)
-library(RSQLite)
 library(readxl)
 
 runs <- c("Fall","Winter","Spring","LateFall","AllRuns")
 dat$SampleDate <- as.Date(dat$SampleDate)
 dat$year <- format(dat$SampleDate, "%Y")
-#dat <- dplyr::filter(dat,!race == "n/p")
-#dat$race2 <- with(dat,ifelse(race == "F","Fall",ifelse(race == "W","Winter",ifelse(race == "S","Spring","LateFall"))))
-
-#final <- read_excel('RBsalmon.xlsx')
-#final$SampleDate <- as.Date(final$SampleDate)
-#final <- dplyr::filter(final,!race == "n/p")
-#final$year <- format(final$SampleDate, "%Y")
-#final$race2 <- with(final,ifelse(race == "F","Fall",ifelse(race == "W","Winter",ifelse(race == "S","Spring","LateFall"))))
 
 shinyApp(
 # Define UI for application that draws a histogram
