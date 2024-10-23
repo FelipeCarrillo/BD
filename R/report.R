@@ -2,7 +2,7 @@
 #'
 #' @param dat Data with 6 columns
 #' @import tidyverse DBI shiny dbplyr shinythemes DT shinycssloaders readxl
-#' @return shiny app of salmon runs. Type 'report(Rbsalmon)' to launch shiny app
+#' @return shiny app of salmon runs. Type 'report(RBsalmon)' to launch shiny app
 #'
 #' @name report
 #'
