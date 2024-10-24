@@ -16,6 +16,7 @@ dataframe adding NAs by column
 Counts NAs
 }
 \examples{
+library(BD)
 dat <- head(airquality, 12)
 dat <- as.data.frame(dat)
 countNA(dat)

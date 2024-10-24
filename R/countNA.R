@@ -7,6 +7,7 @@
 #' @return dataframe adding NAs by column
 
 #' @examples
+#' library(BD)
 #' dat <- head(airquality, 12)
 #' dat <- as.data.frame(dat)
 #' countNA(dat)
