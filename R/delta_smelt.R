@@ -23,7 +23,7 @@ delta_smelt <- function(dat) {
 
   #ds <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
   #head(ds)
-
+ data(smelt)
   #ds <- save(ds, file = 'smelt.rda')
   dat <- dat[,c(1:2,11:13,19,22)]
   dat$numb_fish <- rep(1,nrow(dat)) #add number of fish...each row is one fish
