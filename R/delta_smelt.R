@@ -47,6 +47,7 @@ delta_smelt <- function(dat) {
   ds_sf <- st_as_sf(ds,coords = c(5, 4), remove = F, crs = 4326)
   colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
 
+  shinyApp(
   ui <- fluidPage(
     useShinyjs(),
     theme = shinytheme("cerulean"),
@@ -95,7 +96,7 @@ delta_smelt <- function(dat) {
                                tabPanel("", value = "empty", p("This is just a placeholder.")))#Invisible Placeholder just in case I need another tab(notice "")
                  ))
     )
-  #)
+  ),
 
 
   server <- function(input, output, session) {

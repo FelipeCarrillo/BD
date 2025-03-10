@@ -8,7 +8,7 @@ Description: This is my first package. It contains useful functions but the idea
 Encoding: UTF-8
 License: MIT + file LICENSE
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: tidyverse, tidyr, magrittr, ggplot2, dplyr, sf, DBI, DT, dbplyr, readxl, shiny, shinycssloaders, shinythemes, Hmisc, leaflet, mapview, leafem
 Suggests: 
     testthat (>= 3.0.0)
