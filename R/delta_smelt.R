@@ -24,27 +24,24 @@ delta_smelt <- function(dat) {
   #ds <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
   #head(ds)
 
-  ds <- delta_smelt
   #ds <- save(ds, file = 'smelt.rda')
-  ds <- ds[,c(1:2,11:13,19,22)]
-  ds$numb_fish <- rep(1,nrow(ds)) #add number of fish...each row is one fish
-  head(ds)
-  ds$LifeStage <- with(ds,ifelse(is.na(LifeStage), 'unkLifeStage', LifeStage))
+  dat <- dat[,c(1:2,11:13,19,22)]
+  dat$numb_fish <- rep(1,nrow(dat)) #add number of fish...each row is one fish
+  dat$LifeStage <- with(dat,ifelse(is.na(LifeStage), 'unkLifeStage', LifeStage))
 
-  ds <- ds |> rename(lat = LatitudeStart, lon = LongitudeStart)
+  dat <- dat |> rename(lat = LatitudeStart, lon = LongitudeStart)
   # Exclude records where lat and lon columns have NA
-  ds <- ds %>%
+  dat <- dat %>%
     dplyr::filter(!is.na(lat) & !is.na(lon))
-  head(ds)
 
-  ds$SampleDate <- as.Date(ds$SampleDate,"%m/%d/%Y")
-  ds$year <- format(ds$SampleDate,"%Y")#year
-  ds$year <- as.numeric(ds$year)
-  ds <- ds %>% mutate(month = floor_date(SampleDate, "month")) #Delete this if a different approach is taken while displaying plot
+  dat$SampleDate <- as.Date(dat$SampleDate,"%m/%d/%Y")
+  dat$year <- format(dat$SampleDate,"%Y")#year
+  dat$year <- as.numeric(dat$year)
+  dat <- dat %>% mutate(month = floor_date(SampleDate, "month")) #Delete this if a different approach is taken while displaying plot
   #write_xlsx(ds, 'test.xlsx')
 
   # make ds sf object:
-  ds_sf <- st_as_sf(ds,coords = c(5, 4), remove = F, crs = 4326)
+  ds_sf <- st_as_sf(dat,coords = c(5, 4), remove = F, crs = 4326)
   colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
 
   shinyApp(
