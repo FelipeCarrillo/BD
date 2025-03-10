@@ -75,11 +75,11 @@ delta_smelt <- function(dat) {
                               sliderInput(inputId =  "Yearslider",
                                           label = "Years to plot",
                                           sep = "",
-                                          min = min(ds$year),
-                                          max = max(ds$year),
+                                          min = min(dat$year),
+                                          max = max(dat$year),
                                           step = 1,
                                           #value = 2024)),
-                                          value = c(min = min(ds$year)+1,max = max(ds$year)-1))),
+                                          value = c(min = min(dat$year)+1,max = max(dat$year)-1))),
                  # mainPanel(leafletOutput("map",width = "100%", height="87vh"))
                  #)
                  #))
