@@ -2,13 +2,14 @@
 #'
 #' @param dat Data with multiple columns
 #' @import shiny shinydashboard mapview tidyverse leaflet sf shinyWidgets shinythemes scales shinyjs shinycssloaders
-#' @return shiny app of Delta Smelt. Type 'delta_smelt(smelt)' to launch shiny app
+#' @return shiny app of Delta Smelt. Type 'smelt(smelt)' to launch shiny app
 #'
-#' @name delta_smelt
+#' @name smelt
 #'
 #'
 #' @export
-delta_smelt <- function(dat) {
+#'
+smelt <- function(dat) {
   if (!require("pacman")) install.packages("pacman")
   p_load(shiny, shinydashboard, mapview, tidyverse, leaflet, sf, shinyWidgets, shinythemes, scales, shinyjs, shinycssloaders, dygraphs)
 
@@ -21,9 +22,8 @@ delta_smelt <- function(dat) {
                  na.color = "magenta",
                  layers.control.pos = "topright")
 
-  #ds <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
+  dat <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
   #head(ds)
- data(smelt)
   #ds <- save(ds, file = 'smelt.rda')
   dat <- dat[,c(1:2,11:13,19,22)]
   dat$numb_fish <- rep(1,nrow(dat)) #add number of fish...each row is one fish

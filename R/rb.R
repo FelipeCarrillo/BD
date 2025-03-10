@@ -77,6 +77,16 @@
 #' }
 "mydataset"
 
+#' Shiny application
+#' @format shiny app to display juvenile Delta Smelt:
+#' \describe{
+#'   \item{dat}{Dataset with juvenile Delta Smelt recaptures}
+#'   ...
+#' }
+#' library(BD)
+#' dim(smelt);head(smelt)
+"smelt"
+
 #' Salinity frequencies
 #'
 #' A dataset containing salinity areas
@@ -92,6 +102,14 @@
 #' dim(salinity);head(salinity)
 "salinity"
 
+#' Shiny application
+#' @format shiny app to display juvenile salmon outmigration:
+#' \describe{
+#'   \item{dat}{Dataset with juvenile salmon catch}
+#'   ...
+#' }
+"report"
+
 #' Shapefile of the San Francisco Bay
 #'
 #' NOTE TO REMEMBER: This file was created from suisun_rio_vista.RDS and saved as
@@ -106,10 +124,6 @@
 #' }
 "sf_bay"
 
-#' Shiny application
-#' @format shiny app to display juvenile salmon outmigration:
-#' \describe{
-#'   \item{dat}{Dataset with juvenile salmon catch}
-#'   ...
-#' }
-"report"
+
+
+
