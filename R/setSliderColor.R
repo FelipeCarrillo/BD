@@ -1,15 +1,23 @@
+#' @title Enhanced slider
+#'
+#' @param years Years Sampled
+#' @return Range of years selected by user
+#'
+#' @name Slider
+#'
+#' @export
 setSliderColor <- function(color, sliderId) {
-  
+
   # some tests to control inputs
   stopifnot(!is.null(color))
   stopifnot(is.character(color))
   stopifnot(is.numeric(sliderId))
   stopifnot(!is.null(sliderId))
-  
+
   # the css class for ionrangeslider starts from 0
   # therefore need to remove 1 from sliderId
   sliderId <- sliderId - 1
-  
+
   # create custom css background for each slider
   # selected by the user
   sliderCol <- lapply(sliderId, FUN = function(i) {
@@ -25,7 +33,7 @@ setSliderColor <- function(color, sliderId) {
       ";}"
     )
   })
-  
+
   # insert this custom css code in the head
   # of the shiy app
   custom_head <- tags$head(tags$style(HTML(as.character(sliderCol))))

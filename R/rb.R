@@ -18,6 +18,14 @@
 #' dim(fish);head(fish)
 "fish"
 
+#' Shiny application
+#' @format shiny app to display juvenile salmon outmigration:
+#' \describe{
+#'   \item{dat}{Dataset with juvenile salmon catch}
+#' ...
+#' }
+"report"
+
 #' Salmon catch using screw-traps in Red Bluff, CA
 #'
 #' A dataset containing raw un-expanded data
@@ -77,16 +85,6 @@
 #' }
 "mydataset"
 
-#' Shiny application
-#' @format shiny app to display juvenile Delta Smelt:
-#' \describe{
-#'   \item{dat}{Dataset with juvenile Delta Smelt recaptures}
-#'   ...
-#' }
-#' library(BD)
-#' dim(smelt);head(smelt)
-"smelt"
-
 #' Salinity frequencies
 #'
 #' A dataset containing salinity areas
@@ -103,12 +101,12 @@
 "salinity"
 
 #' Shiny application
-#' @format shiny app to display juvenile salmon outmigration:
+#' @format shiny app to display Delta Smelt Releases:
 #' \describe{
-#'   \item{dat}{Dataset with juvenile salmon catch}
+#'   \item{dat}{Dataset with Delta Smelt}
 #'   ...
 #' }
-"report"
+"ds"
 
 #' Shapefile of the San Francisco Bay
 #'

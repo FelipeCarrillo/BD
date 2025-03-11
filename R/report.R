@@ -55,7 +55,8 @@ selectInput(inputId = "run",
     mainPanel(
       withSpinner(plotOutput("plot"),type=5,color="#00ff00",color.background = "orange"),
       withSpinner(DT::dataTableOutput("data1")))
-    ))),
+    ))
+),
 
 # Define server logic required to draw a histogram
 server <- function(input, output,session) {
@@ -123,7 +124,7 @@ server <- function(input, output,session) {
 
     }) # height = 200, width = 300 Plot window
 
-}
+}#Bracket for clossing Server
 
 # Run the application
 #shinyApp(ui = ui, server = server)

@@ -8,7 +8,7 @@
 shiny app to display juvenile salmon outmigration:
 \describe{
   \item{dat}{Dataset with juvenile salmon catch}
-  ...
+...
 }
 }
 \usage{

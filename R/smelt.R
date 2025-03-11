@@ -1,19 +1,29 @@
-#' @title shiny app to visualize Delta Smelt
+#' @title shiny app to visualize Delta Smelt Releases
 #'
 #' @param dat Data with multiple columns
-#' @import shiny shinydashboard mapview tidyverse leaflet sf shinyWidgets shinythemes scales shinyjs shinycssloaders
-#' @return shiny app of Delta Smelt. Type 'smelt(smelt)' to launch shiny app
+#' @import shiny mapview sf ggplot2 dplyr shinyjs readxl shinythemes shinyWidgets leaflet lubridate
+#' @return shiny app of Delta Smelt. Type 'smelt(ds)' to launch the shiny app
 #'
 #' @name smelt
 #'
-#'
 #' @export
-#'
 smelt <- function(dat) {
-  if (!require("pacman")) install.packages("pacman")
-  p_load(shiny, shinydashboard, mapview, tidyverse, leaflet, sf, shinyWidgets, shinythemes, scales, shinyjs, shinycssloaders, dygraphs)
 
-  source('setSliderColor.R') #Import this function from Katherines's folder to color the slider
+  library(shiny)
+  library(mapview)
+  library(sf)
+  library(ggplot2)
+  library(dplyr)
+  library(shinyjs)
+  library(readxl)
+  library(shinythemes)
+  library(shinyWidgets)
+  library(leaflet)
+  library(lubridate)
+
+  conflicts_prefer(dplyr::src)
+  load_all() #Use this function to load all the functions available in the R folder of the package.....don't use 'source' like below
+  #source('setSliderColor.R') #Import this function from Katherines's folder to color the slider
   #https://github.com/dreamRs/shinyWidgets/blob/26838f9e9ccdc90a47178b45318d110f5812d6e1/R/setSliderColor.R ##Check this out
 
   mapviewOptions(basemaps = c("Esri.WorldStreetMap","Esri.WorldTopoMap","Esri.NatGeoWorldMap","USGS.USImageryTopo"),
@@ -22,27 +32,36 @@ smelt <- function(dat) {
                  na.color = "magenta",
                  layers.control.pos = "topright")
 
-  dat <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
+  #dat <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
   #head(ds)
   #ds <- save(ds, file = 'smelt.rda')
+  #load(file = 'ds.rda')
+  #head(ds)
+  #dat <- ds
   dat <- dat[,c(1:2,11:13,19,22)]
+  head(dat)
   dat$numb_fish <- rep(1,nrow(dat)) #add number of fish...each row is one fish
+  #head(dat)
   dat$LifeStage <- with(dat,ifelse(is.na(LifeStage), 'unkLifeStage', LifeStage))
 
   dat <- dat |> rename(lat = LatitudeStart, lon = LongitudeStart)
   # Exclude records where lat and lon columns have NA
   dat <- dat %>%
     dplyr::filter(!is.na(lat) & !is.na(lon))
+  #head(dat)
 
   dat$SampleDate <- as.Date(dat$SampleDate,"%m/%d/%Y")
   dat$year <- format(dat$SampleDate,"%Y")#year
   dat$year <- as.numeric(dat$year)
   dat <- dat %>% mutate(month = floor_date(SampleDate, "month")) #Delete this if a different approach is taken while displaying plot
-  #write_xlsx(ds, 'test.xlsx')
-
-  # make ds sf object:
+  #write_xlsx(dat, 'test.xlsx')
+head(dat)
+  # make dat sf object:
   ds_sf <- st_as_sf(dat,coords = c(5, 4), remove = F, crs = 4326)
   colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
+#mapview(ds_sf)
+
+
 
   shinyApp(
   ui <- fluidPage(
@@ -118,21 +137,21 @@ smelt <- function(dat) {
     output$map <- renderLeaflet({
       req(input$lstages)
       md <- ds_sf #Make a copy of the ds_sf dataset
-      head(md)
+      #head(md)
+
 
       if(input$type == "LifeStage") # only filter by LifeStage if LifeStage is selected..
         ###md <- ds_sf %>% filter(LifeStage %in% input$lstages & year == input$Yearslider)
-        md <- ds_sf %>% filter(LifeStage %in% input$lstages & year >= min(input$Yearslider) & year <= max(input$Yearslider))
+        md <- ds_sf %>% dplyr::filter(LifeStage %in% input$lstages & year >= min(input$Yearslider) & year <= max(input$Yearslider))
 
       else
         ###md <- ds_sf %>% filter(year == input$Yearslider)
-        md <- ds_sf %>% filter(year >= min(input$Yearslider) & year <= max(input$Yearslider))
+        md <- ds_sf %>% dplyr::filter(year >= min(input$Yearslider) & year <= max(input$Yearslider))
 
       #final <- mapview(md, zcol = "LifeStage", col.regions = colors, layer.name = "LifeStage", alpha = 0.2, cex = 4)
       final <- mapview(md, zcol = input$type, col.regions = colors, layer.name = input$type, alpha = 0.2, cex = 4)
       final@map
     })
-
 
     #Make the reactive event to dynamically create and update the table
     tabdata <- reactive({
@@ -140,10 +159,10 @@ smelt <- function(dat) {
       ds_sf <- st_drop_geometry(ds_sf)
 
       if(input$type == "LifeStage") # only filter by LifeStage if LifeStage is selected..
-        md <- ds_sf %>% filter(LifeStage %in% input$lstages & year >= min(input$Yearslider) & year <= max(input$Yearslider))
+        md <- ds_sf %>% dplyr::filter(LifeStage %in% input$lstages & year >= min(input$Yearslider) & year <= max(input$Yearslider))
 
       else
-        md <- ds_sf %>% filter(year >= min(input$Yearslider) & year <= max(input$Yearslider))
+        md <- ds_sf %>% dplyr::filter(year >= min(input$Yearslider) & year <= max(input$Yearslider))
 
     })
 
@@ -164,13 +183,12 @@ smelt <- function(dat) {
       }
     })
 
-
-
     output$plot <- renderPlot({
 
       if (!input$Fixed) {
         ggplot(tabdata(), aes(x = month, y = numb_fish)) +
-          geom_bar(stat = "identity", aes_string(fill = input$type)) + #Notice the aes_string because LifeStage is a character
+          geom_bar(stat = "identity", aes(fill = .data[[input$type]])) + #Replaced aes_string with aes(fill =.data[[input$type]])
+          #geom_bar(stat = "identity", aes_string(fill = input$type)) + #Notice the aes_string because LifeStage is a character
           scale_x_date(date_breaks = "1 month", date_labels = "%b-%y") +
           theme_classic(base_size = 12) + scale_fill_brewer(palette="Paired") +
           theme(legend.position = 'bottom') + labs(title = paste0("Monthly ",input$type , " Data for Year(s) ",
@@ -178,23 +196,16 @@ smelt <- function(dat) {
       } else {
 
         ggplot(tabdata(), aes(x = month, y = numb_fish)) +  ##Used width = 20 to avoid the super skinny bars when plotting 'unkLifestage'
-          geom_bar(width = 20, stat = "identity", aes_string(fill = input$type)) + #Notice the aes_string because LifeStage is a character
+          geom_bar(width = 20, stat = "identity", aes(fill = .data[[input$type]])) +
           scale_x_date(date_breaks = "1 month", date_labels = "%b-%y") +
           theme_bw(base_size = 12) + scale_fill_brewer(palette="Paired") +
-          facet_grid(LifeStage ~ input$type, scales = "free", space= "free") +
+          facet_grid(LifeStage ~ input$type, scales = "free") + #space = "free"
           theme(legend.position = 'bottom', panel.grid.minor = element_blank()) +
           labs(title = paste0("Monthly ",input$type , " Data for Year(s) ",
                               min(tabdata()$year), " to " ,max(tabdata()$year)))
       }
-
     })
 
-
-  }
-
-  )#clossing for ui fluidpage
-  } # bracket for closing delta_smelt function
- # shinyApp(ui, server)
-
-
-
+  }#Close Server
+  ) #Close shinyApp
+}#Close Function smelt

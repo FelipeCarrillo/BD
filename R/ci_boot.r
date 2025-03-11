@@ -31,12 +31,14 @@
 #' @export
 library(Hmisc)
 library(tidyverse)
+library(conflicted)
+conflicts_prefer(dplyr::summarize)
 
 ci_boot <- function(dat, by, var, conf.int = 0.90,...) {
   v <- pull(dat, {{var}})
   if(!is.numeric(v)) {stop("'var' must be numeric")}
   dat %>%
     group_by({{by}}) %>%
-    dplyr::summarise(mean=list(smean.cl.boot({{var}}, conf.int=conf.int))) %>%
+    dplyr::summarize(mean=list(smean.cl.boot({{var}}, conf.int=conf.int))) %>%
     unnest_wider(mean)
 }
