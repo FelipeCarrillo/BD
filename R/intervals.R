@@ -11,7 +11,7 @@
 #' library(BD)
 #' library(tidyverse)
 #' data(fish)
-#' juv <- filter(fish, wk < 6)
+#' juv <- dplyr::filter(fish, wk < 6)
 #' juv
 #'
 #' data(model)

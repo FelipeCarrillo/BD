@@ -12,7 +12,7 @@
 #' library(BD)
 #' library(tidyverse)
 #' library(Hmisc)
-#'
+#' conflicts_prefer(dplyr::summarize)
 #' data(fish)
 #' salmon <- dplyr::filter(fish, wk < 6)
 #' salmon
