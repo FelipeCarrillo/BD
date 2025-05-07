@@ -8,7 +8,7 @@ header-includes: \usepackage{pdflscape} \usepackage{caption} \usepackage[T1]{fon
   \usepackage{booktabs}
 output:
   pdf_document: default
-output_dir: "C:/Users/fcarrillo/Desktop/DSIBM/Shiny Data Visualization/FinalShiny/DeltaSmelt/udemyDataUpload/Parks/BD/BD/inst/rmd"
+#output_dir: "C:/Users/fcarrillo/Desktop/DSIBM/Shiny Data Visualization/FinalShiny/DeltaSmelt/udemyDataUpload/Parks/BD/BD/inst/rmd"
 geometry: left=2cm,right=2cm,top=2cm,bottom=2cm
 #date: "`r format(Sys.time(), '%Y-%m-%d %H:%M:%S %Z')`"
 date: \small\color{blue} Last compiled on `r format(Sys.time(), '%Y-%m-%d %H:%M:%S %Z')`
@@ -47,13 +47,17 @@ knitr::include_graphics("three_rivers.png")
 ```{r, echo=FALSE, fig.align='center', out.width = '100%'}
 library(readxl)
 library(kableExtra)
-library(gridExtra)
+suppressPackageStartupMessages({library(gridExtra)})
 library(grid)
+#library(rhandsontable)
+
 crlf <- read_excel("California_Red-Legged_Frog.xlsx")
 tt <- ttheme_default(colhead = list(fg_params = list(parse=TRUE)))#TO AUTOMATICALLY ADJUST COLUMN WIDTHS
-table1 <- tableGrob(crlf, rows = NULL, theme = tt)
+table1 <- tableGrob(crlf, rows = NULL, theme = tt) #remove rownames before drawing the table
 grid.draw(table1)
 kable(crlf)
+#Tables below don't seem to work especially kable_styling function in kableExtra
+#rhandsontable(crlf)
 #kable(crlf, format = "latex", booktabs = TRUE, caption="California Red Legged Frog Distribution") |>
 # kable_styling(full_width = FALSE, latex_options = "striped", "HOLD_position") 
 
@@ -64,7 +68,6 @@ tt2 <- ttheme_minimal(colhead = list(fg_params = list(parse=TRUE)))#TO AUTOFIT C
 table2 <- tableGrob(crlf, rows = NULL, theme = tt2)#include/exclude rownames in tableGrob
 grid.draw(table2)
 ```
-
 
 ```{r, echo=FALSE}
 #knitr::include_graphics("mykable.png")

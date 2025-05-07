@@ -4,22 +4,22 @@
 \alias{ci_sum}
 \title{Compute traditional confidence intervals}
 \arguments{
-\item{dat}{Dataset of juvenile or adult salmon}
+\item{dat}{Dataset of juvenile or adult salmon.}
 
-\item{by}{Break dat by week, month or year}
+\item{by}{Break dat by week, month or year. These columns must exist in dataset.}
 
-\item{var}{Numeric variable to compute to estimate sum and confidence intervals}
+\item{var}{Numeric variable (catch) to compute to estimate sum and confidence intervals.}
 
-\item{sdv}{Standard deviation}
+\item{sdv}{Standard deviation.}
 
-\item{se}{Standard error}
+\item{se}{Standard error.}
 
-\item{total}{Total fish passage}
+\item{total}{Total fish passage.}
 
-\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99}
+\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99.}
 }
 \value{
-Summed fish passage and confidence intervals on total fish passage
+Summed fish passage and confidence intervals on total fish passage.
 }
 \description{
 Compute traditional confidence intervals
@@ -40,6 +40,7 @@ reframe(pd = round(if_else(is.na(pd),mean(pd, na.rm=TRUE),pd))) \%>\%
 arrange(wk) \%>\% data.frame()
 salmon
 
+ci_sum(dat = salmon, by = month, var = pd, conf.int = 0.95)
 ci_sum(salmon, month, pd, conf.int = 0.90)
 ci_sum(salmon, wk, pd, conf.int = 0.99)
 

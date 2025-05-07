@@ -4,16 +4,16 @@
 \alias{ci_boot_sum}
 \title{Compute summed bootstrapped confidence intervals}
 \arguments{
-\item{dat}{Dataset of juvenile or adult salmon}
+\item{dat}{Dataset of juvenile or adult salmon.}
 
-\item{by}{Break dat by week, month or year}
+\item{by}{Break dat by week, month or year. These columns must exist in dataset.}
 
-\item{var}{Numeric variable to compute to estimate sum and confidence intervals}
+\item{var}{Numeric variable (catch) to compute to estimate sum and confidence intervals.}
 
-\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99}
+\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99.}
 }
 \value{
-Summed fish passage and confidence intervals on the sum
+Summed fish passage and confidence intervals on the sum.
 }
 \description{
 Compute summed bootstrapped confidence intervals

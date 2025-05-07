@@ -1,10 +1,10 @@
 #' @title Compute summed bootstrapped confidence intervals
 #'
-#' @param dat Dataset of juvenile or adult salmon
-#' @param by Break dat by week, month or year
-#' @param var Numeric variable to compute to estimate sum and confidence intervals
-#' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99
-#' @return Summed fish passage and confidence intervals on the sum
+#' @param dat Dataset of juvenile or adult salmon.
+#' @param by Break dat by week, month or year. These columns must exist in dataset.
+#' @param var Numeric variable (catch) to compute to estimate sum and confidence intervals.
+#' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99.
+#' @return Summed fish passage and confidence intervals on the sum.
 #' @name ci_boot_sum
 #' @import tidyverse dplyr
 #'
@@ -28,6 +28,8 @@
 #' ci_boot_sum(salmon, month, pd)
 #'
 #' @export
+#THIS FUCTION IS TO BE USED WITH ANY SPECIES OR ANY DATASET THAT CONTAINS A CATCH COLUMN
+#BE SURE TO SUPPLY YOUR CATCH COLUMN AS var = yourcatchcolumnname inside the ci_boot_sum function
 
 library(tidyverse)
 my_boot = function(x, times = 1000, conf.int = 0.95) {
@@ -40,6 +42,7 @@ ci_boot_sum <- function(dat, by, var, conf.int = 0.95,...) {
   #if(!is.numeric(var)) {stop("'var' must be numeric")}  #CAUSES ERRORS SO USE 'pull' INSTEAD TO AVOID ERRORS
   dat <- na.omit(dat)
   v <- pull(dat, {{var}})
+  if (missing(v)) stop("Error: 'var' is missing.")
   if(!is.numeric(v)) {stop("'var' must be numeric")}
   dat %>%
     group_by({{by}}) %>%

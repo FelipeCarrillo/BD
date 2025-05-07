@@ -2,13 +2,53 @@
 #'
 #' @param dat Data with multiple columns
 #' @import shiny mapview sf ggplot2 dplyr shinyjs readxl shinythemes shinyWidgets leaflet lubridate
-#' @return shiny app of Delta Smelt. Type 'smelt(ds)' to launch the shiny app
+#' @return shiny app of Delta Smelt. Type 'smelt(yourdataframe)' to launch the shiny app. Your dataset must have the following fields to work properly:
+#' lat, lon, SampleDate, month, year, numb_fish, Survey, ReleaseEvent, ReleaseMethod, origin, and LifeStage.
 #'
 #' @name smelt
+#' @examples
+#' library(shiny)
+#' library(mapview)
+#' library(sf)
+#' library(ggplot2)
+#' library(dplyr)
+#' library(shinyjs)
+#' library(readxl)
+#' library(shinythemes)
+#' library(shinyWidgets)
+#' library(leaflet)
+#' library(lubridate)
+#' library(BD)
+#'
+#' my_wd <- system.file("examples", package = "BD")
+#' setwd(my_wd)
+#' mydat <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
+#'
+#' #Select only columns of interest
+#' mydat <- mydat[,c(1:2,11:13,19,22)]
+#' head(mydat)
+#'
+#' # NOTE: Don't add the columns again if they already exist on your original dataframe
+#' mydat$numb_fish <- rep(1,nrow(mydat)) #add number of fish...each row is one fish
+#' mydat$LifeStage <- with(mydat,ifelse(is.na(LifeStage), 'unkLifeStage', LifeStage))
+#' mydat <- mydat |> rename(lat = LatitudeStart, lon = LongitudeStart)
+#' mydat <- mydat %>% dplyr::filter(!is.na(lat) & !is.na(lon))
+#' mydat$SampleDate <- as.Date(mydat$SampleDate,"%m/%d/%Y")
+#' mydat$year <- format(mydat$SampleDate,"%Y")
+#' mydat$year <- as.numeric(mydat$year)
+#'
+#' mydat <- mydat %>% mutate(month = floor_date(SampleDate, "month"))
+#'
+#' # make mydat sf object:
+#' ds_sf <- st_as_sf(mydat,coords = c(5, 4), remove = FALSE, crs = 4326)
+#' colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
+#'
+#' #Display the shiny app
+#' smelt(mydat)
+#'
 #'
 #' @export
 smelt <- function(dat) {
-
   library(shiny)
   library(mapview)
   library(sf)
@@ -22,7 +62,7 @@ smelt <- function(dat) {
   library(lubridate)
 
   conflicts_prefer(dplyr::src)
-  load_all() #Use this function to load all the functions available in the R folder of the package.....don't use 'source' like below
+  devtools::load_all() #Use this function to load all the functions available in the R folder of the package.....don't use 'source' like below
   #source('setSliderColor.R') #Import this function from Katherines's folder to color the slider
   #https://github.com/dreamRs/shinyWidgets/blob/26838f9e9ccdc90a47178b45318d110f5812d6e1/R/setSliderColor.R ##Check this out
 
@@ -31,37 +71,6 @@ smelt <- function(dat) {
                  vector.palette = colorRampPalette(c("snow", "cornflowerblue", "grey10")),
                  na.color = "magenta",
                  layers.control.pos = "topright")
-
-  #dat <- read_excel('delta_smelt.xlsx', sheet = "delta_smelt")
-  #head(ds)
-  #ds <- save(ds, file = 'smelt.rda')
-  #load(file = 'ds.rda')
-  #head(ds)
-  #dat <- ds
-  dat <- dat[,c(1:2,11:13,19,22)]
-  head(dat)
-  dat$numb_fish <- rep(1,nrow(dat)) #add number of fish...each row is one fish
-  #head(dat)
-  dat$LifeStage <- with(dat,ifelse(is.na(LifeStage), 'unkLifeStage', LifeStage))
-
-  dat <- dat |> rename(lat = LatitudeStart, lon = LongitudeStart)
-  # Exclude records where lat and lon columns have NA
-  dat <- dat %>%
-    dplyr::filter(!is.na(lat) & !is.na(lon))
-  #head(dat)
-
-  dat$SampleDate <- as.Date(dat$SampleDate,"%m/%d/%Y")
-  dat$year <- format(dat$SampleDate,"%Y")#year
-  dat$year <- as.numeric(dat$year)
-  dat <- dat %>% mutate(month = floor_date(SampleDate, "month")) #Delete this if a different approach is taken while displaying plot
-  #write_xlsx(dat, 'test.xlsx')
-head(dat)
-  # make dat sf object:
-  ds_sf <- st_as_sf(dat,coords = c(5, 4), remove = F, crs = 4326)
-  colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
-#mapview(ds_sf)
-
-
 
   shinyApp(
   ui <- fluidPage(
@@ -167,12 +176,28 @@ head(dat)
     })
 
     ##Use tabdata() result below to feed the table and to print the dynamic ggplot title years being visualized
-    output$mytable = DT::renderDataTable(server = TRUE,({ #server = TRUE to display only the data selected with the selectInput controls
+    output$mytable = DT::renderDataTable(server = FALSE,{ #server = FALSE to display,save, or print only the data selected with the selectInput controls
       ##Don't display the month and numb_fish columns in the table
-      select(tabdata(),-c(month, numb_fish))
+      select(tabdata(),-c(month, numb_fish)) %>% DT::datatable(extensions = "Buttons",
+                                                options = list(dom = "Blfrtip",
+                                                buttons = c("excel", "pdf", "print")#buttons = c("excel", "csv", "copy", "pdf", "print")
+                                                ))
 
     })
-    )
+       ####DON'T USE THE CODE BELOW. IT WORKS BUT HAS TO BE TWEAKED. KEEP IT TO GRAB CODE TO STYLE THE DATATABLE ABOVE
+    # output$mytable = DT::renderDataTable(server = FALSE,{ #server = FALSE to display only the data selected with the selectInput controls
+    #   ##Don't display the month and numb_fish columns in the table
+    #   tabdata() %>% DT::datatable(extensions = "Buttons",
+    #                 options = list(initComplete = JS("function(settings, json) {",
+    #                                                  "$(this.api().table().header()).css({'background-color': 'goldenrod', 'color': 'blue'});",
+    #                                                  "}"), scrollY = "300px", pageLength = 10, scrollX = TRUE, dom = "Bftsp",
+    #                                buttons = c("excel")   #buttons = c("copy","excel")
+    #                                ))
+    #
+    #   select(tabdata(),-c(month, numb_fish))
+    #
+    # })
+
 
     #Disable the checkbox when the Plot window is not active
     observeEvent(input$myTabs,{
@@ -209,3 +234,4 @@ head(dat)
   }#Close Server
   ) #Close shinyApp
 }#Close Function smelt
+

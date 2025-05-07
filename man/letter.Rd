@@ -3,15 +3,24 @@
 \name{letter}
 \alias{letter}
 \title{shiny app to print automated section 7 concurrence letters}
-\usage{
-letter()
-}
 \value{
-shiny app for documents. Type 'letter()' to launch the shiny interface.
+shiny app for documents. Type 'letter("yourfilename.rmd")' to launch the shiny interface.
 }
 \description{
 shiny app to print automated section 7 concurrence letters
 }
 \examples{
-letter()
+# Example usage. If output_file (output_name) is left blank in letter(), a pdf file is generated with the input_file name
+library(rmarkdown)
+library(gridExtra)
+
+my_wd <- system.file("examples", package = "BD")
+setwd(my_wd)
+letter("letter.rmd")
+browseURL("letter.pdf")
+
+#Customize output name of rmd file
+letter("letter.rmd", output_name = "BeautifulLetter.pdf")
+browseURL("BeautifulLetter.pdf")
+
 }

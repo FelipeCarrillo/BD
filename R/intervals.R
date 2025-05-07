@@ -23,6 +23,7 @@
 #IMPORTANT TO REMEMBER: The intervals function calculates the mean for weeks
 #with NA's within the function so there is no need to re-calculate it in the
 #example like I did in ci_boot_sum, ci_boot and ci_sum
+#THIS FUCTION IS ONLY TO BE USED WHEN A DATASET CONTAINS %Q(percent flow) SUCH AS RED BLUFF MONITORING PROGRAM
 library(stats)
 library(tidyverse)
 intervals <- function(dataset, by, model){

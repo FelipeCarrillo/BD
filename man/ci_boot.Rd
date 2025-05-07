@@ -4,16 +4,16 @@
 \alias{ci_boot}
 \title{Compute mean bootstrapped confidence intervals}
 \arguments{
-\item{dat}{Dataset of juvenile or adult salmon}
+\item{dat}{Dataset of juvenile or adult salmon.}
 
-\item{by}{Break dat by week, month or year}
+\item{by}{Break dat by week, month or year. These columns must exist in dataset.}
 
-\item{var}{Numeric variable to compute to estimate mean and confidence intervals}
+\item{var}{Numeric variable (catch) to compute to estimate mean and confidence intervals.}
 
-\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99}
+\item{conf.int}{Confidence intervals such as 68, 80, 90, 95, 99.}
 }
 \value{
-Mean fish passage and confidence intervals on the mean
+Mean fish passage and confidence intervals on the mean.
 }
 \description{
 Compute mean bootstrapped confidence intervals
@@ -21,8 +21,10 @@ Compute mean bootstrapped confidence intervals
 \examples{
 library(BD)
 library(tidyverse)
+library(dplyr)
 library(Hmisc)
-conflicts_prefer(dplyr::summarize)
+library(conflicted)
+conflicts_prefer(dplyr::summarise)
 data(fish)
 salmon <- dplyr::filter(fish, wk < 6)
 salmon

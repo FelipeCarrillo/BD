@@ -10,7 +10,7 @@ License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 7.3.2
 Imports: tidyverse, tidyr, magrittr, ggplot2, dplyr, sf, DBI, DT, dbplyr, readxl, shiny, scales, Hmisc, leafem, leaflet, mapview, shinyWidgets,
-    shinycssloaders, shinydashboard, shinyjs, shinythemes, lubridate, rmarkdown
+    shinycssloaders, shinydashboard, shinyjs, shinythemes, lubridate, rmarkdown, GWalkR, conflicted, gridExtra
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

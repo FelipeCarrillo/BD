@@ -18,14 +18,6 @@
 #' dim(fish);head(fish)
 "fish"
 
-#' Shiny application
-#' @format shiny app to display juvenile salmon outmigration:
-#' \describe{
-#'   \item{dat}{Dataset with juvenile salmon catch}
-#' ...
-#' }
-"report"
-
 #' Salmon catch using screw-traps in Red Bluff, CA
 #'
 #' A dataset containing raw un-expanded data
@@ -45,6 +37,14 @@
 #' library(BD)
 #' dim(RBsalmon);head(RBsalmon)
 "RBsalmon"
+
+#' Shiny application
+#' @format shiny app to display juvenile salmon outmigration:
+#' \describe{
+#'   \item{dat}{Dataset with juvenile salmon catch}
+#' ...
+#' }
+"report"
 
 #' Trap efficiencies
 #'
