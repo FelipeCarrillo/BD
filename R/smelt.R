@@ -46,7 +46,6 @@
 #' #Display the shiny app
 #' smelt(mydat)
 #'
-#'
 #' @export
 smelt <- function(dat) {
   library(shiny)
@@ -62,7 +61,7 @@ smelt <- function(dat) {
   library(lubridate)
 
   conflicts_prefer(dplyr::src)
-  devtools::load_all() #Use this function to load all the functions available in the R folder of the package.....don't use 'source' like below
+  #devtools::load_all() #Use this function to load all the functions available in the R folder of the package.....don't use 'source' like below
   #source('setSliderColor.R') #Import this function from Katherines's folder to color the slider
   #https://github.com/dreamRs/shinyWidgets/blob/26838f9e9ccdc90a47178b45318d110f5812d6e1/R/setSliderColor.R ##Check this out
 
