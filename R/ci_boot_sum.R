@@ -5,6 +5,9 @@
 #' @param var Numeric variable (catch) to compute to estimate sum and confidence intervals.
 #' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99.
 #' @return Summed fish passage and confidence intervals on the sum.
+#' @seealso \code{\link{ci_boot}} to compute mean fish passage and confidence intervals by week, month, and year.
+#' @seealso \code{\link{ci_sum}} to compute sum of fish by week, month, and year and traditional confidence intervals.
+#'
 #' @name ci_boot_sum
 #' @import tidyverse dplyr
 #'

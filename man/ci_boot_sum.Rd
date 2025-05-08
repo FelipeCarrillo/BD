@@ -38,3 +38,8 @@ ci_boot_sum(dat = salmon, by = wk, var = pd, conf.int = 0.99)
 ci_boot_sum(salmon, month, pd)
 
 }
+\seealso{
+\code{\link{ci_boot}} to compute mean fish passage and confidence intervals by week, month, and year.
+
+\code{\link{ci_sum}} to compute sum of fish by week, month, and year and traditional confidence intervals.
+}

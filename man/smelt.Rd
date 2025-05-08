@@ -56,5 +56,4 @@ colors <- colorRampPalette(c('yellow', 'red', 'blue', 'green'))
 #Display the shiny app
 smelt(mydat)
 
-
 }

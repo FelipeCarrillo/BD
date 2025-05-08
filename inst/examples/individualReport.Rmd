@@ -1,0 +1,347 @@
+---
+title: "Juvenile Salmon Mainstem Monitoring Program"
+params:
+  runs:  #just as a placeholder. the render() function will overwrite this params on YAML
+  - Fall
+  - Winter 
+  year:
+  - 2011
+  - 2012
+output:
+  pdf_document: default
+geometry: margin=0.5in    
+header-includes:
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usepackage{array}
+- \usepackage{multirow}
+- \usepackage{wrapfig}
+- \usepackage{float}
+- \usepackage{colortbl}
+- \usepackage{pdflscape}
+- \usepackage{tabu}
+- \usepackage{threeparttable}
+- \usepackage{threeparttablex}
+- \usepackage[normalem]{ulem}
+- \usepackage{makecell}
+#- \usepackage{xcolor} 
+- \usepackage{subcaption}
+---
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 8, fig.height = 6, 
+  warning = FALSE, fig.align = "center", message = FALSE)
+```
+
+## Important note
+
+This rmd file is run by both **report.r** and **generate_reports.r** functions or it can be ran directly from the knit menu here. Make sure to type the desired runs and years on yaml.
+
+## Introduccion
+
+A statistical analysis was conducted to determine which environmental covariates
+were related to the efficiency of rotary screw traps operated at the Red Bluff Diversion Dam
+trap site on the Sacramento River Mainstem. That analysis suggests that LunarPhase, Mean-
+FLRelease andWaterTemperature were not significantly related to trap efficiency. In contrast,
+the analysis suggests that PercQ, Turbidity, RiverDepth andWeather were significantly related
+to trap efficiency.
+
+
+```{r, echo=FALSE}
+# Packages we will use
+#if(!require("pacman")){
+ # install.packages("pacman")
+##}
+#pacman::p_load(tidyverse, table1, compareGroups, kableExtra,readxl,janitor,gt)
+library(tidyverse)
+library(kableExtra)
+library(readxl)
+library(table1)
+library(scales)
+library(janitor)
+library(gt)
+library(patchwork)
+library(parseLatex)
+
+salmon <- read_excel('RBsalmon.xlsx')
+salmon <- na.omit(salmon)
+salmon$SampleDate <- as.Date(salmon$SampleDate,"%m/%d/%Y")
+salmon <- dplyr::filter(salmon,!race == "n/p") 
+salmon <- dplyr::filter(salmon,ForkLength > 0) 
+salmon$year <- format(salmon$SampleDate,"%Y") #year
+salmon$week <- format(salmon$SampleDate,"%V") #week starts with 01 on jan 1..also "%W" and "%U" can be used
+salmon$month <- format(salmon$SampleDate,"%B") #month name..abreviated "%b" or number "%m"
+```
+
+```{r, echo=FALSE}
+
+ salmon <- salmon[,c(1,2,5,6,9,11,13,14:16)]
+
+filtered_data <- salmon %>%
+  dplyr::filter(year %in% params$year, race2 %in% params$runs) #%>% #Must use %in% operator, otherwise, == will give the wrong Count per run 
+ #arrange(month, SampleDate)
+
+#Get the total count for all the runs in current year
+#all_runs <- salmon %>% dplyr::filter(year %in% params$year) %>% 
+ #group_by(year, race2) %>%
+ # summarise(total = sum(Count))
+
+#Subsetting works best than filtering with dplyr because kable was only giving me the first column
+all_runs <- subset(salmon, year %in% params$year)
+all_runs <- all_runs %>% 
+  group_by(year, race2) %>%
+  summarise(total = sum(Count))
+
+#make it a data.frame or table won't print properly
+all_runs2 <- data.frame(all_runs)
+
+total_run <- sum(all_runs$total)
+total_run <- format(total_run, big.mark = ",", scientific = FALSE)
+```
+
+```{r, echo =FALSE, results='asis'}
+#Now get the total count for the current run and year
+#a <- salmon[,c(1,2,5,6,9,11,13,14:16)]
+this_run <- salmon %>% dplyr::filter(year %in% params$year & race2 %in% params$runs) %>% 
+ group_by(race2, year) %>%
+  summarise(total = sum(Count))
+
+total_catch <- sum(this_run$total)
+total_catch <- format(total_catch, big.mark = ",", scientific = FALSE)
+all_runs <- unique(all_runs$race2)
+
+#Caption for summarized side by side tables
+caption_text1 <- paste("This table represents", paste(params$runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
+
+caption_text2 <- paste("This table represents the total", paste(all_runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
+
+t1 <- kbl(this_run, booktabs = TRUE, format = 'latex', linesep = "") %>% 
+  kable_styling(latex_options = c("striped", "Hold_position"), stripe_color = "cyan!10")
+
+t2 <- kbl(all_runs2, booktabs = TRUE, format = 'latex', linesep= "") %>% 
+  kable_styling(latex_options = c("striped"), stripe_color = "pink!25")
+
+t1 = substr(t1, start = 25, stop = nchar(t1) - 11) ##USE this to avoid crashes when using kable_styling from kableExtra (see chunk above).
+t2 = substr(t2, start = 25, stop = nchar(t2) - 11) ##USE this to avoid crashes when using kable_styling from kableExtra (see chunk above).
+
+cat(sprintf("
+\\begin{table}[H]
+    \\caption{Juvenile Salmon Outmigrating through the Mainstem Diversion Dam}
+    \\centering
+    \\begin{subtable}[t]{0.48\\textwidth}
+        \\centering
+        \\caption{%s}
+        %s   
+    \\end{subtable}%%
+    \\hfill
+    \\begin{subtable}[t]{0.48\\textwidth}
+        \\centering
+        \\caption{%s}
+        %s
+    \\end{subtable}
+\\end{table}
+", caption_text1, t1, caption_text2, t2))
+```
+
+```{r, echo=FALSE}
+#run <- salmon %>% filter(year %in% params$year & race2 %in% params$runs)
+#head(run, 20)
+```
+
+```{r, echo=FALSE}
+library(kableExtra)
+kbl(head(filtered_data, 15), booktabs = T, linesep = "", caption = paste("This table represents", paste(params$runs, collapse = ", "), "and", paste(params$year, collapse = ", "), "brood year (s)")) %>%
+  #linesep removes the white space every 5 rows that prints in kableextra
+kable_styling(latex_options = "HOLD_position") %>% #HOLD_position option doesn't work when striped is included in kable_styling
+  #NOTE: TAKE A LOOK AT THE xcolor PACKAGE TO SEE AVAILABLE COLORS FOR kableExtra TABLES AND BE ABLE TO USE SOMETHING LIKE "violet!5"
+kable_styling(latex_options = "striped", stripe_color = "violet!5")  #I had to include another kable_styling because striped wouldn't work when HOLD_position was in place
+```
+
+
+The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `r all_runs` combined. 
+
+```{r,echo=FALSE, cache=FALSE}
+#De-aggregate to convert Count into single rows
+d_ag <- filtered_data[rep(1:nrow(filtered_data),filtered_data$Count),]
+d_ag$Count2 <- rep(1,nrow(d_ag))
+
+run_sum <- d_ag %>%  
+   group_by(race2, year) %>%
+    summarise(total = sum(Count2))
+
+#Extract fish columns only to be used below dynamically
+fish_cols <- unique(d_ag$race2)
+```
+
+```{r, echo=FALSE}
+ #Make a pivot_wider so the salmon Runs will be headers for gt
+salmon_gt <- d_ag %>% 
+  group_by(race2, year) %>% 
+  mutate(obs = row_number()) %>% 
+  pivot_wider(names_from = "race2", values_from = "Count2", values_fill = 0) %>% 
+  arrange(year, obs) %>% 
+  select(-obs) 
+#dim(salmon_gt)
+#salmon_gt
+```
+
+## Summary Tables
+
+```{r echo=FALSE, cache=FALSE}
+library(table1)
+comma_categorical <- function(x) {
+  c("", sapply(stats.default(x), function(y) with(y,
+    sprintf("%s (%s%%)", 
+            prettyNum(FREQ, big.mark = ","),
+            format(round(PCT, 1), nsmall = 1)))))
+}
+
+x <- table1(~ race2 + StationCode + year + ForkLength, data = d_ag, render.categorical = comma_categorical, droplevels = F, overall = "Overall" ,caption="Summary Table")
+
+t1kable(x) |>
+kable_styling(latex_options = "HOLD_position") %>% 
+kable_styling(latex_options = "striped")
+
+#IMPORTANT: SampleDate MUST be converted to 'character' or table1 will crash if format as.Date
+#SO, just for this table convert SampleDate to character but convert back to as.Date if needed
+d_ag$SampleDate <- as.character(d_ag$SampleDate)
+
+xx <- table1(~ StationCode + ForkLength | race2, data = d_ag, render.categorical = comma_categorical, overall = "Overall" ,caption="Juvenile salmon migrating out to the ocean")
+
+t1kable(xx) |>
+kable_styling(latex_options = "HOLD_position") %>% 
+kable_styling(latex_options = "striped")
+
+```
+
+```{r, echo=FALSE}
+salmon_gt <- salmon_gt |> dplyr::mutate(week = strftime(SampleDate, format = "%V"))  #week starts with 01 on jan 1..also "%W" and "%U" can be used
+#salmon_d_ag$week <- with(salmon_d_ag,ifelse(month=='December' & day==31,"52",week))
+#salmon_gt
+
+#Break salmon_gt into subsets of weeks to be able to print headers on every page of longtable
+#gt_52_36 <- salmon_gt %>% filter(week > 35)
+#gt_52_36 |> 
+ 
+
+###Plot only a few months for simplicity
+salmon_gt <- salmon_gt %>% dplyr::filter(month > 'May')
+  #source('repeat_header_gt.R')
+
+salmon_gt |>
+  mutate(SampleDate = as.character(SampleDate)) |>
+  group_by(year, month) |>   #MANIPULATE group TO CHANGE THE TABLES SUMMARIZATION
+  summarise(across(all_of(fish_cols),sum), across(c(Turbidity,WaterTemperature), mean)) %>%  #Notice the double across call below...GREAT!!!
+  rowwise() %>% mutate(Total = sum(across(all_of(fish_cols)))) |> 
+  #summarise(across(c(Winter, Fall, Spring), sum), across(c(Turbidity,WaterTemperature), mean)) |> 
+  
+arrange(desc(year),desc(month)) |>  
+  gt() |> tab_caption(caption = "Nice longtable with headers on every page") %>% #Use tab_caption to autonumber gt tables
+fmt_number(decimals = 0, sep_mark = ",") |>
+  
+summary_rows( # sum WINTER, FALL, LATEFALL and SPRING ONLY
+    columns = c(fish_cols, Total),
+    #columns = c(Winter, Spring, Fall),
+    fns =  list(label = "Total", fn = "sum"), side = "bottom", fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  
+  summary_rows( # GET THE mean OF TURBIDITY AND WATERTEMPERATURE ONLY
+    columns = c(Turbidity,WaterTemperature),
+    fns =  list(label="avg",fn = "mean"),
+   fmt = ~ fmt_number(., decimals = 1, use_seps = FALSE)) |> #Format the 'avg' row
+  #round Turbidity and WaterTemperature columns to one decimal
+  fmt_number(columns = c(Turbidity,WaterTemperature),
+             decimals = 1) |>
+
+ # grand_summary_rows(columns = -c(SampleDate,Turbidity,WaterTemperature),
+    grand_summary_rows(columns = c(fish_cols, Total),
+    #grand_summary_rows(columns = c(Winter, Spring, Fall),
+  fns = list(label = "Grand Total", fn = "sum"), ,fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  tab_header(title = "Data summarized by year and month",
+    subtitle = "Total number of fish by year and month") %>% 
+  tab_options(latex.use_longtable = TRUE) %>%
+            BD::repeat_header_gt() #This option prints headers on every single page for longtable(NOT WORKING RIGHT NOW)
+```
+
+```{r, echo=FALSE}
+salmon_gt <- salmon_gt |> dplyr::mutate(week = strftime(SampleDate, format = "%V"))  #week starts with 01 on jan 1..also "%W" and "%U" can be used
+
+###Plot only a few months for simplicity
+#salmon_gt <- salmon_gt %>% dplyr::filter(month > 'May')
+  #source('repeat_header_gt.R')
+
+salmon_gt |>
+  mutate(SampleDate = as.character(SampleDate)) |>
+  group_by(year, month, week) |>   #MANIPULATE group TO CHANGE THE TABLES SUMMARIZATION
+  summarise(across(all_of(fish_cols),sum), across(c(Turbidity,WaterTemperature), mean)) %>%  #Notice the double across call below...GREAT!!!
+  rowwise() %>% mutate(Total = sum(across(all_of(fish_cols)))) |> 
+  #summarise(across(c(Winter, Fall, Spring), sum), across(c(Turbidity,WaterTemperature), mean)) |> 
+  
+arrange(desc(year),desc(month), desc(week)) |>  
+  gt() |> tab_caption(caption = "Long Table of fish caught by year, month and week") %>% #Use tab_caption to autonumber gt tables
+fmt_number(decimals = 0, sep_mark = ",") |>
+  
+summary_rows( # sum WINTER, FALL, LATEFALL and SPRING ONLY
+    columns = c(fish_cols, Total),
+    #columns = c(Winter, Spring, Fall),
+    fns =  list(label = "Total", fn = "sum"), side = "bottom", fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  
+  summary_rows( # GET THE mean OF TURBIDITY AND WATERTEMPERATURE ONLY
+    columns = c(Turbidity,WaterTemperature),
+    fns =  list(label="avg",fn = "mean"),
+   fmt = ~ fmt_number(., decimals = 1, use_seps = FALSE)) |> #Format the 'avg' row
+  #round Turbidity and WaterTemperature columns to one decimal
+  fmt_number(columns = c(Turbidity,WaterTemperature),
+             decimals = 1) |>
+
+ # grand_summary_rows(columns = -c(SampleDate,Turbidity,WaterTemperature),
+    grand_summary_rows(columns = c(fish_cols, Total),
+    #grand_summary_rows(columns = c(Winter, Spring, Fall),
+  fns = list(label = "Grand Total", fn = "sum"), ,fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  tab_header(title = "Data summarized by year, month, and week",
+    subtitle = "Total number of fish by year, month, and week") %>% 
+  tab_options(latex.use_longtable = TRUE) %>%
+            BD::repeat_header_gt() #This option prints headers on every single page for longtable(NOT WORKING RIGHT NOW)
+```
+
+\newpage
+```{r, echo=FALSE}
+salmon_gt <- salmon_gt |> dplyr::mutate(week = strftime(SampleDate, format = "%V"))  #week starts with 01 on jan 1..also "%W" and "%U" can be used
+
+###Plot only a few months for simplicity
+#salmon_gt <- salmon_gt %>% dplyr::filter(month > 'May')
+  #source('repeat_header_gt.R')
+
+salmon_gt |>
+  mutate(SampleDate = as.character(SampleDate)) |>
+  group_by(year, week) |>   #MANIPULATE group TO CHANGE THE TABLES SUMMARIZATION
+  summarise(across(all_of(fish_cols),sum), across(c(Turbidity,WaterTemperature), mean)) %>%  #Notice the double across call below...GREAT!!!
+  rowwise() %>% mutate(Total = sum(across(all_of(fish_cols)))) |> 
+  #summarise(across(c(Winter, Fall, Spring), sum), across(c(Turbidity,WaterTemperature), mean)) |> 
+  
+arrange(desc(year), desc(week)) |>  
+  gt() |> tab_caption(caption = "Long Table of yearly catch by week") %>% #Use tab_caption to autonumber gt tables
+fmt_number(decimals = 0, sep_mark = ",") |>
+  
+summary_rows( # sum WINTER, FALL, LATEFALL and SPRING ONLY
+    columns = c(fish_cols, Total),
+    #columns = c(Winter, Spring, Fall),
+    fns =  list(label = "Total", fn = "sum"), side = "bottom", fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  
+  summary_rows( # GET THE mean OF TURBIDITY AND WATERTEMPERATURE ONLY
+    columns = c(Turbidity,WaterTemperature),
+    fns =  list(label="avg",fn = "mean"),
+   fmt = ~ fmt_number(., decimals = 1, use_seps = FALSE)) |> #Format the 'avg' row
+  #round Turbidity and WaterTemperature columns to one decimal
+  fmt_number(columns = c(Turbidity,WaterTemperature),
+             decimals = 1) |>
+
+ # grand_summary_rows(columns = -c(SampleDate,Turbidity,WaterTemperature),
+    grand_summary_rows(columns = c(fish_cols, Total),
+    #grand_summary_rows(columns = c(Winter, Spring, Fall),
+  fns = list(label = "Grand Total", fn = "sum"), ,fmt = ~ fmt_number(.,decimals = 0, sep_mark = ",")) |>
+  tab_header(title = "Data summarized by year and week",
+    subtitle = "Total number of fish by year and week") %>% 
+  tab_options(latex.use_longtable = TRUE) %>%
+            BD::repeat_header_gt() #This option prints headers on every single page for longtable(NOT WORKING RIGHT NOW)
+```
+

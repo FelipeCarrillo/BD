@@ -3,7 +3,7 @@
 #' @param years Years Sampled
 #' @return Range of years selected by user
 #'
-#' @name Slider
+#' @name setSliderColor
 #'
 #' @export
 setSliderColor <- function(color, sliderId) {

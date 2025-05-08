@@ -9,6 +9,9 @@
 #' @param total Total fish passage.
 #' @param conf.int Confidence intervals such as 68, 80, 90, 95, 99.
 #' @return Summed fish passage and confidence intervals on total fish passage.
+#' @seealso \code{\link{ci_boot}} to compute mean fish passage and confidence intervals by week, month, and year.
+#' @seealso \code{\link{ci_boot_sum}} to compute summed bootstrapped confidence intervals by week, month, and year.
+#'
 #' @name ci_sum
 #' @import tidyverse dplyr
 #'

@@ -38,14 +38,6 @@
 #' dim(RBsalmon);head(RBsalmon)
 "RBsalmon"
 
-#' Shiny application
-#' @format shiny app to display juvenile salmon outmigration:
-#' \describe{
-#'   \item{dat}{Dataset with juvenile salmon catch}
-#' ...
-#' }
-"report"
-
 #' Trap efficiencies
 #'
 #' A dataset containing trap efficiency trials
