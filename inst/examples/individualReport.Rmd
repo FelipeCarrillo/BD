@@ -35,7 +35,7 @@ knitr::opts_chunk$set(
 
 ## Important note
 
-This rmd file is run by both **report.r** and **generate_reports.r** functions or it can be ran directly from the knit menu here. Make sure to type the desired runs and years on yaml.
+This rmd file is run by **generate_reports.r** function or it can be ran directly from the knit menu here. Make sure to type the desired runs and years on yaml.
 
 ## Introduccion
 
@@ -97,6 +97,9 @@ all_runs2 <- data.frame(all_runs)
 
 total_run <- sum(all_runs$total)
 total_run <- format(total_run, big.mark = ",", scientific = FALSE)
+
+#Put commas on total..NOTE: I didnt put commas an 'all_runs' above because it would throw an error when summing 'total_run'
+all_runs2 <- all_runs2 %>% mutate(total = format(total, big.mark = ",", scientific = FALSE))
 ```
 
 ```{r, echo =FALSE, results='asis'}
@@ -108,12 +111,15 @@ this_run <- salmon %>% dplyr::filter(year %in% params$year & race2 %in% params$r
 
 total_catch <- sum(this_run$total)
 total_catch <- format(total_catch, big.mark = ",", scientific = FALSE)
-all_runs <- unique(all_runs$race2)
+
+#Put commas on total..NOTE: I didnt put commas an 'this_run' above because it would throw an error when summing 'total_catch'
+this_run <- this_run %>% mutate(total = format(total, big.mark = ",", scientific = FALSE))
+runs <- unique(all_runs$race2)
 
 #Caption for summarized side by side tables
 caption_text1 <- paste("This table represents", paste(params$runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
 
-caption_text2 <- paste("This table represents the total", paste(all_runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
+caption_text2 <- paste("This table represents the total", paste(runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
 
 t1 <- kbl(this_run, booktabs = TRUE, format = 'latex', linesep = "") %>% 
   kable_styling(latex_options = c("striped", "Hold_position"), stripe_color = "cyan!10")
@@ -158,7 +164,7 @@ kable_styling(latex_options = "striped", stripe_color = "violet!5")  #I had to i
 ```
 
 
-The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `r all_runs` combined. 
+The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `r runs` combined. 
 
 ```{r,echo=FALSE, cache=FALSE}
 #De-aggregate to convert Count into single rows
@@ -342,6 +348,6 @@ summary_rows( # sum WINTER, FALL, LATEFALL and SPRING ONLY
   tab_header(title = "Data summarized by year and week",
     subtitle = "Total number of fish by year and week") %>% 
   tab_options(latex.use_longtable = TRUE) %>%
-            BD::repeat_header_gt() #This option prints headers on every single page for longtable(NOT WORKING RIGHT NOW)
+            BD::repeat_header_gt() 
 ```
 

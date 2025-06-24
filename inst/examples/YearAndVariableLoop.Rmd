@@ -143,6 +143,14 @@ salmon_gt <- d_ag %>%
 ```
 
 ```{r, echo=FALSE}
+library(table1)
+comma_categorical <- function(x) {
+  c("", sapply(stats.default(x), function(y) with(y,
+    sprintf("%s (%s%%)", 
+            prettyNum(FREQ, big.mark = ","),
+            format(round(PCT, 1), nsmall = 1)))))
+}
+
 xx <- table1(~ StationCode + ForkLength | race2, data = d_ag, render.categorical = comma_categorical, overall = NULL ,caption = paste("Juvenile", paste(params$runs), "salmon catch and percentage by screw-trap in", paste(params$year)))
 
 t1kable(xx) |>
@@ -152,14 +160,6 @@ kable_styling(latex_options = "striped", stripe_color = "cyan!10")
 ```
 
 ```{r echo=FALSE, cache=FALSE}
-library(table1)
-comma_categorical <- function(x) {
-  c("", sapply(stats.default(x), function(y) with(y,
-    sprintf("%s (%s%%)", 
-            prettyNum(FREQ, big.mark = ","),
-            format(round(PCT, 1), nsmall = 1)))))
-}
-
 salmon_gt <- salmon_gt |> dplyr::mutate(week = strftime(SampleDate, format = "%V"))  #week starts with 01 on jan 1..also "%W" and "%U" can be used
 #salmon_d_ag$week <- with(salmon_d_ag,ifelse(month=='December' & day==31,"52",week))
 #salmon_gt
@@ -199,5 +199,5 @@ summary_rows( # sum WINTER, FALL, LATEFALL and SPRING ONLY
   tab_header(title = "Data summarized by year, month, and week",
     subtitle = "Total number of fish by year, month, and week") %>% 
   tab_options(latex.use_longtable = TRUE) %>%
-            BD::repeat_header_gt() #This option prints headers on every single page for longtable(NOT WORKING RIGHT NOW)
+            BD::repeat_header_gt() 
 ```
