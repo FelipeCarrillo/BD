@@ -95,6 +95,9 @@ all_runs2 <- data.frame(all_runs)
 
 total_run <- sum(all_runs$total)
 total_run <- format(total_run, big.mark = ",", scientific = FALSE)
+
+#Put commas on total..NOTE: I didnt put commas an 'all_runs' above because it would throw an error when summing 'total_run'
+all_runs2 <- all_runs2 %>% mutate(total = format(total, big.mark = ",", scientific = FALSE))
 ```
 
 ```{r, echo =FALSE, results='asis'}
@@ -106,7 +109,10 @@ this_run <- salmon %>% dplyr::filter(year %in% params$year & race2 %in% params$r
 
 total_catch <- sum(this_run$total)
 total_catch <- format(total_catch, big.mark = ",", scientific = FALSE)
-all_runs <- unique(all_runs$race2)
+
+#Put commas on total..NOTE: I didnt put commas an 'this_run' above because it would throw an error when summing 'total_catch'
+this_run <- this_run %>% mutate(total = format(total, big.mark = ",", scientific = FALSE))
+runs <- unique(all_runs$race2)
 
 #Caption for summarized side by side tables
 caption_text1 <- paste("This table represents", paste(params$runs, collapse = ", "), "juvenile salmon run (s) for", paste(params$year, collapse = ", "), "brood year (s)")
@@ -156,7 +162,7 @@ kable_styling(latex_options = "striped", stripe_color = "violet!5")  #I had to i
 ```
 
 
-The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `r all_runs` combined. 
+The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `runs` combined. 
 
 ```{r,echo=FALSE, cache=FALSE}
 #De-aggregate to convert Count into single rows
