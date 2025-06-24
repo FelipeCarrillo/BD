@@ -161,12 +161,7 @@ kable_styling(latex_options = "HOLD_position") %>% #HOLD_position option doesn't
 kable_styling(latex_options = "striped", stripe_color = "violet!5")  #I had to include another kable_styling because striped wouldn't work when HOLD_position was in place
 ```
 
-
-<<<<<<< HEAD
 The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `r runs` combined. 
-=======
-The total catch of `r params$runs` is `r total_catch` for brood year(s) `r params$year` and a grand total of `r total_run` for all the runs `runs` combined. 
->>>>>>> f2be6844c80fcd6f644f6da6682b2a7578e59ee7
 
 ```{r,echo=FALSE, cache=FALSE}
 #De-aggregate to convert Count into single rows
